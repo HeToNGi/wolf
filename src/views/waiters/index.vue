@@ -15,6 +15,7 @@
       fit
       highlight-current-row
       @selection-change="handleSelectionChange"
+      height="330"
     >
      <el-table-column
       type="selection"
@@ -51,7 +52,7 @@
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="230px">
+      <el-table-column label="操作" align="center" width="300px">
         <template slot-scope="scope">
           <el-button
           size="mini"
@@ -64,6 +65,10 @@
           size="mini"
           type="parmin"
           @click="handleDetail(scope.$index, scope.row)">详情</el-button>
+          <el-button
+          size="mini"
+          type="parmin"
+          @click="sendHandler(scope.$index, scope.row)">授权</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -137,10 +142,11 @@ export default {
   //在仓库中的数据获取时 必须写在计算属性当中
   computed:{
      ...mapState('waiters',['list','listLoading','total','dialogFormVisible','waiters','message','imgPhoto']),
+     ...mapState('orders',['orderId'])
   },
   methods:{
-    ...mapActions('waiters',['fetchData','queryPageFind','suerButtonHandler','deleteData','batchDelete']),
-    ...mapMutations('waiters',['setParam','openModal','closeModal','setWaiters','setId','setIds','addImg','setImg','setDetail']),
+    ...mapActions('waiters',['sendOrder','fetchData','queryPageFind','suerButtonHandler','deleteData','batchDelete']),
+    ...mapMutations('waiters',['setParam','openModal','closeModal','setWaiters','setId','setIds','addImg','setImg','setDetail','setOrderId','setWaiterId']),
     //分页 当前页码发生变化时 将当前页传给状态机
     pageChangeHandler(currtPage){
       var page=currtPage-1;
@@ -164,7 +170,11 @@ export default {
     //弹出模态框，并将当前行赋值给waiters
     handleEdit(index,row){
       //  this.$refs['dialigForm'].resetFields();
-      console.log(row);
+      if(row.status=='启用'){
+        row.status=true;
+      }else{
+        row.status=false;
+      };
        this.setWaiters(row);
        this.openModal();
     },
@@ -254,6 +264,30 @@ export default {
     handleDetail(index,row){
            this.setDetail(row);
            this.$router.push('/detail')    
+   },
+   sendHandler(index,row){
+     if(this.orderId==undefined){
+       this.$notify({
+          title: '叮咚',
+          message:'请选则订单'
+        })
+     }else{
+       this.setOrderId(this.orderId);
+       this.setWaiterId(row.id);
+       this.sendOrder().then(()=>{
+        this.$notify({
+          title: '叮咚',
+          message:'派单成功'
+        });
+        this.$router.push('/order/index');
+       }).catch(()=>{
+          this.$notify({
+          title: '叮咚',
+          message:'派单失败'
+        })
+        });
+     };
+
    }
 },
   created() {

@@ -8,7 +8,7 @@ const getDefaultState = () => {
     return {
         token: getToken(),
         name: '',
-        avatar: ''
+        avatar: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1601641210674&di=f6f2f9f931898d924049adb6ce63772b&imgtype=0&src=http%3A%2F%2Fimg2.oldkids.cn%2Fupload%2F260790000%2Fu260789219%2F2014%2F04%2F07%2Fgroup_20140407095429317439.gif'
     }
 }
 
@@ -63,7 +63,7 @@ const actions = {
                 const { name, avatar } = data
 
                 commit('SET_NAME', name)
-                commit('SET_AVATAR', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600666624809&di=eb7ef59f97d7ffccf1605787d84b2627&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fb45b1e24b8cd4b040d6571c871220d7975858ebb25ff-udoUSY_fw658')
+                commit('SET_AVATAR', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1601641210674&di=f6f2f9f931898d924049adb6ce63772b&imgtype=0&src=http%3A%2F%2Fimg2.oldkids.cn%2Fupload%2F260790000%2Fu260789219%2F2014%2F04%2F07%2Fgroup_20140407095429317439.gif')
                 resolve(data)
             }).catch(error => {
                 reject(error)

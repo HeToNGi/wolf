@@ -17,6 +17,8 @@ const waiters = {
             ids: [],
             imgPhoto: '',
             detail: null,
+            orderId: null,
+            waiterId: null
         }
     },
     mutations: {
@@ -72,6 +74,12 @@ const waiters = {
         },
         setDetail(state, detailData) {
             state.detailData = detailData
+        },
+        setOrderId(state, id) {
+            state.orderId = id;
+        },
+        setWaiterId(state, id) {
+            state.waiterId = id
         }
     },
     actions: {
@@ -117,6 +125,10 @@ const waiters = {
                 // console.log(resp);
             })
         },
+        //派单 拿到订单状态机中的订单id与这里的服务员id进行派单
+        sendOrder(context) {
+            return get('/order/sendOrder', { waiterId: context.state.waiterId, orderId: context.state.orderId })
+        }
     }
 }
 export default waiters;
